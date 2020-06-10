@@ -50,7 +50,7 @@ class partstoAGVSM(Behavior):
 
 
 	def create(self):
-		# x:623 y:238, x:797 y:409
+		# x:737 y:206, x:797 y:409
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'], input_keys=['agv_id', 'offset2', 'offset1', 'pose_on_agv1', 'pose_on_agv2', 'part_type2'])
 		_state_machine.userdata.joint_values = []
 		_state_machine.userdata.joint_names = []
@@ -101,7 +101,7 @@ class partstoAGVSM(Behavior):
 			# x:98 y:59
 			OperatableStateMachine.add('AGV choice',
 										EqualState(),
-										transitions={'true': 'SetPosL2', 'false': 'SetPosL1'},
+										transitions={'true': 'SetPosL1', 'false': 'SetPosL2'},
 										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
 										remapping={'value_a': 'agv_id', 'value_b': 'agv2'})
 
@@ -110,28 +110,28 @@ class partstoAGVSM(Behavior):
 										ReplaceState(),
 										transitions={'done': 'SetPosR1'},
 										autonomy={'done': Autonomy.Off},
-										remapping={'value': 'config_name_GantryL_AGVL', 'result': 'config_name_GantryAGVL'})
+										remapping={'value': 'config_name_GantryR_AGVL', 'result': 'config_name_GantryAGVL'})
 
 			# x:534 y:29
 			OperatableStateMachine.add('SetPosR1',
 										ReplaceState(),
-										transitions={'done': 'SetTray1'},
+										transitions={'done': 'MoveL to AGV'},
 										autonomy={'done': Autonomy.Off},
-										remapping={'value': 'config_name_GantryL_AGVR', 'result': 'config_name_GantryAGVR'})
+										remapping={'value': 'config_name_GantryR_AGVR', 'result': 'config_name_GantryAGVR'})
 
 			# x:340 y:91
 			OperatableStateMachine.add('SetPosL2',
 										ReplaceState(),
 										transitions={'done': 'SetPosR2'},
 										autonomy={'done': Autonomy.Off},
-										remapping={'value': 'config_name_GantryR_AGVL', 'result': 'config_name_GantryAGVL'})
+										remapping={'value': 'config_name_GantryL_AGVL', 'result': 'config_name_GantryAGVL'})
 
-			# x:534 y:91
+			# x:535 y:91
 			OperatableStateMachine.add('SetPosR2',
 										ReplaceState(),
-										transitions={'done': 'SetTray2'},
+										transitions={'done': 'MoveL to AGV'},
 										autonomy={'done': Autonomy.Off},
-										remapping={'value': 'config_name_GantryR_AGVR', 'result': 'config_name_GantryAGVR'})
+										remapping={'value': 'config_name_GantryL_AGVR', 'result': 'config_name_GantryAGVR'})
 
 			# x:1187 y:33
 			OperatableStateMachine.add('Move to PrePlace',
@@ -140,7 +140,7 @@ class partstoAGVSM(Behavior):
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off, 'param_error': Autonomy.Off},
 										remapping={'config_name': 'config_name_PlaceAGVL', 'move_group': 'move_group_L', 'move_group_prefix': 'move_group_prefix', 'action_topic': 'action_topic', 'robot_name': 'robot_name', 'config_name_out': 'config_name_out', 'move_group_out': 'move_group_out', 'robot_name_out': 'robot_name_out', 'action_topic_out': 'action_topic_out', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
-			# x:936 y:56
+			# x:833 y:56
 			OperatableStateMachine.add('MoveL to AGV',
 										SrdfStateToMoveitAriac(),
 										transitions={'reached': 'Move to PrePlace', 'planning_failed': 'failed', 'control_failed': 'Move to PrePlace', 'param_error': 'failed'},
@@ -152,14 +152,14 @@ class partstoAGVSM(Behavior):
 										GetObjectPoseState(object_frame='kit_tray_1', ref_frame='world'),
 										transitions={'continue': 'pose_on_AGV', 'failed': 'retry'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'pose': 'pose'})
+										remapping={'pose': 'agv_pose'})
 
 			# x:1604 y:295
 			OperatableStateMachine.add('pose_on_AGV',
 										ComputeDropPartOffsetGraspAriacState(joint_names=['left_shoulder_pan_joint', 'left_shoulder_lift_joint', 'left_elbow_joint', 'left_wrist_1_joint', 'left_wrist_2_joint', 'left_wrist_3_joint']),
 										transitions={'continue': 'MoveToDrop1', 'failed': 'retry'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'move_group': 'move_group_L', 'move_group_prefix': 'move_group_prefix', 'tool_link': 'tool_link_L', 'part_pose': 'pose_on_agv1', 'pose': 'pose', 'offset': 'offset1', 'rotation': 'rotation', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
+										remapping={'move_group': 'move_group_L', 'move_group_prefix': 'move_group_prefix', 'tool_link': 'tool_link_L', 'part_pose': 'pose_on_agv1', 'pose': 'agv_pose', 'offset': 'offset1', 'rotation': 'rotation', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
 			# x:1219 y:277
 			OperatableStateMachine.add('retry',
@@ -198,25 +198,25 @@ class partstoAGVSM(Behavior):
 			# x:1066 y:683
 			OperatableStateMachine.add('Move to PrePlace_3',
 										SrdfStateToMoveitAriac(),
-										transitions={'reached': 'AGV choice_2', 'planning_failed': 'failed', 'control_failed': 'AGV choice_2', 'param_error': 'failed'},
+										transitions={'reached': 'pose_on_AGV_2', 'planning_failed': 'failed', 'control_failed': 'pose_on_AGV_2', 'param_error': 'failed'},
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off, 'param_error': Autonomy.Off},
 										remapping={'config_name': 'config_name_PlaceAGVR', 'move_group': 'move_group_R', 'move_group_prefix': 'move_group_prefix', 'action_topic': 'action_topic', 'robot_name': 'robot_name', 'config_name_out': 'config_name_out', 'move_group_out': 'move_group_out', 'robot_name_out': 'robot_name_out', 'action_topic_out': 'action_topic_out', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
-			# x:478 y:611
+			# x:491 y:669
 			OperatableStateMachine.add('GetAGV1pose_2',
 										GetObjectPoseState(object_frame='kit_tray_1', ref_frame='world'),
 										transitions={'continue': 'pose_on_AGV_2', 'failed': 'retry_2'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'pose': 'pose'})
+										remapping={'pose': 'pose2'})
 
 			# x:14 y:717
 			OperatableStateMachine.add('pose_on_AGV_2',
 										ComputeDropPartOffsetGraspAriacState(joint_names=['right_shoulder_pan_joint', 'right_shoulder_lift_joint', 'right_elbow_joint', 'right_wrist_1_joint', 'right_wrist_2_joint', 'right_wrist_3_joint']),
 										transitions={'continue': 'MoveToDrop2', 'failed': 'retry_2'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'move_group': 'move_group_R', 'move_group_prefix': 'move_group_prefix', 'tool_link': 'tool_link_R', 'part_pose': 'pose_on_agv2', 'pose': 'pose', 'offset': 'offset2', 'rotation': 'rotation', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
+										remapping={'move_group': 'move_group_R', 'move_group_prefix': 'move_group_prefix', 'tool_link': 'tool_link_R', 'part_pose': 'pose_on_agv2', 'pose': 'agv_pose', 'offset': 'offset2', 'rotation': 'rotation', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
-			# x:586 y:520
+			# x:586 y:481
 			OperatableStateMachine.add('retry_2',
 										WaitState(wait_time=0.5),
 										transitions={'done': 'Move to PrePlace_3'},
@@ -257,7 +257,7 @@ class partstoAGVSM(Behavior):
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off, 'param_error': Autonomy.Off},
 										remapping={'config_name': 'config_name_homeR', 'move_group': 'move_group_R', 'move_group_prefix': 'move_group_prefix', 'action_topic': 'action_topic', 'robot_name': 'robot_name', 'config_name_out': 'config_name_out', 'move_group_out': 'move_group_out', 'robot_name_out': 'robot_name_out', 'action_topic_out': 'action_topic_out', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
-			# x:340 y:280
+			# x:335 y:205
 			OperatableStateMachine.add('GantryHome',
 										SrdfStateToMoveitAriac(),
 										transitions={'reached': 'finished', 'planning_failed': 'failed', 'control_failed': 'finished', 'param_error': 'failed'},
@@ -271,28 +271,14 @@ class partstoAGVSM(Behavior):
 										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
 										remapping={'value_a': 'part_type2', 'value_b': 'empty'})
 
-			# x:725 y:28
-			OperatableStateMachine.add('SetTray1',
-										ReplaceState(),
-										transitions={'done': 'MoveL to AGV'},
-										autonomy={'done': Autonomy.Off},
-										remapping={'value': 'KT1', 'result': 'kit_tray'})
-
-			# x:724 y:90
-			OperatableStateMachine.add('SetTray2',
-										ReplaceState(),
-										transitions={'done': 'MoveL to AGV'},
-										autonomy={'done': Autonomy.Off},
-										remapping={'value': 'KT2', 'result': 'kit_tray'})
-
-			# x:632 y:725
+			# x:668 y:546
 			OperatableStateMachine.add('GetAGV2pose_2',
 										GetObjectPoseState(object_frame='kit_tray_2', ref_frame='world'),
 										transitions={'continue': 'pose_on_AGV_2', 'failed': 'retry_2'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'pose': 'pose'})
+										remapping={'pose': 'pose2'})
 
-			# x:806 y:679
+			# x:749 y:650
 			OperatableStateMachine.add('AGV choice_2',
 										EqualState(),
 										transitions={'true': 'GetAGV2pose_2', 'false': 'GetAGV1pose_2'},
@@ -311,7 +297,7 @@ class partstoAGVSM(Behavior):
 										GetObjectPoseState(object_frame='kit_tray_2', ref_frame='world'),
 										transitions={'continue': 'pose_on_AGV', 'failed': 'retry'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'pose': 'pose'})
+										remapping={'pose': 'agv_pose'})
 
 
 		return _state_machine
