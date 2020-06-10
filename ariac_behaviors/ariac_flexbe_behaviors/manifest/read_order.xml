@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Read order">
+
+	<executable package_path="ariac_flexbe_behaviors.read_order_sm" class="ReadorderSM" />
+	<tagstring></tagstring>
+	<author>Bas Jochems, Geert van der Meijden</author>
+	<date>Thu Jun 04 2020</date>
+	<description>
+		Order gets read
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="GetShipments" />
+
+	<!-- Available Parameters -->
+
+</behavior>

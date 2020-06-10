@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Get_Products">
+
+	<executable package_path="ariac_flexbe_behaviors.get_products_sm" class="Get_ProductsSM" />
+	<tagstring></tagstring>
+	<author>Bas Jochems, Geert van der Meijden</author>
+	<date>Thu Jun 04 2020</date>
+	<description>
+		Assign products to arms
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="Orderverwerking" />
+
+	<!-- Available Parameters -->
+
+</behavior>

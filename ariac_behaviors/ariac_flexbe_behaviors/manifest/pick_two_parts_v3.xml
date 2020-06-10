@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Pick two parts V3">
+
+	<executable package_path="ariac_flexbe_behaviors.pick_two_parts_v3_sm" class="PicktwopartsV3SM" />
+	<tagstring></tagstring>
+	<author>Bas Jochems, Geert van der Meijden</author>
+	<date>Tue May 26 2020</date>
+	<description>
+		pakt twee onderdelen
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

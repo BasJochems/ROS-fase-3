@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Orderverwerking">
+
+	<executable package_path="ariac_flexbe_behaviors.orderverwerking_sm" class="OrderverwerkingSM" />
+	<tagstring></tagstring>
+	<author>Bas Jochems, Geert van der Meijden</author>
+	<date>Wed Jun 03 2020</date>
+	<description>
+		verwerkt de binnenkomende orders
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="Part choice" />
+	<contains name="parts to AGV" />
+
+	<!-- Available Parameters -->
+
+</behavior>

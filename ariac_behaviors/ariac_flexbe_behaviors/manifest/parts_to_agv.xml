@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="parts to AGV">
+
+	<executable package_path="ariac_flexbe_behaviors.parts_to_agv_sm" class="partstoAGVSM" />
+	<tagstring></tagstring>
+	<author>Bas Jochems, Geert van der Meijden</author>
+	<date>Wed Jun 03 2020</date>
+	<description>
+		Bezorgd de onderdelen naar de juiste agv
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Part choice">
+
+	<executable package_path="ariac_flexbe_behaviors.part_choice_sm" class="PartchoiceSM" />
+	<tagstring></tagstring>
+	<author>Bas Jochems</author>
+	<date>Tue Jun 02 2020</date>
+	<description>
+		part 1 en 2 worden bepaald en geconfigureerd
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="Pick two parts V3" />
+
+	<!-- Available Parameters -->
+
+</behavior>
