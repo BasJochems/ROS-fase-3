@@ -82,8 +82,8 @@ models_over_bins:
   bin3:
     models:
       pulley_part_red:
-        xyz_start: [0.2, 0.2, 0.0]
-        xyz_end: [0.4, 0.4, 0.0]
+        xyz_start: [0.15, 0.15, 0.0]
+        xyz_end: [0.45, 0.45, 0.0]
         rpy: [0, 0, 0]
         num_models_x: 2
         num_models_y: 2
@@ -101,16 +101,16 @@ models_over_shelves:
   shelf3:
     models:
       gear_part_blue:
-        xyz_start: [0.7, -0.5, 0.0]
-        xyz_end: [0., -0.4, 0.0]
+        xyz_start: [0.7, -0.55, 0.0]
+        xyz_end: [0., -0.45, 0.0]
         rpy: [0, 0, 0]
         num_models_x: 5
         num_models_y: 2
   shelf6:
     models:
       gasket_part_red:
-        xyz_start: [0.7, 0.5, 0.0]
-        xyz_end: [0., 0.4, 0.0]
+        xyz_start: [0.7, 0.45, 0.0]
+        xyz_end: [0., 0.35, 0.0]
         rpy: [0, 0, 0]
         num_models_x: 4
         num_models_y: 1
