@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="OffsetCounter">
+
+	<executable package_path="ariac_flexbe_behaviors.offsetcounter_sm" class="OffsetCounterSM" />
+	<tagstring></tagstring>
+	<author>Bas en Geert</author>
+	<date>Thu Jun 04 2020</date>
+	<description>
+		Changes offset for placing parts
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

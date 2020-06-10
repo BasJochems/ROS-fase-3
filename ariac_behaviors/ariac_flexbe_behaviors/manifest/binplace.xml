@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="BinPlace">
+
+	<executable package_path="ariac_flexbe_behaviors.binplace_sm" class="BinPlaceSM" />
+	<tagstring></tagstring>
+	<author>Bas en Geert</author>
+	<date>Wed Jun 03 2020</date>
+	<description>
+		Behavior that controls the placing of the parts
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

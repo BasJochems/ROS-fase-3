@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="start_belt_to_bin">
+
+	<executable package_path="ariac_flexbe_behaviors.start_belt_to_bin_sm" class="start_belt_to_binSM" />
+	<tagstring></tagstring>
+	<author>Bas en Geert</author>
+	<date>Tue May 26 2020</date>
+	<description>
+		start_belt_to_bin
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="belt_to_bin" />
+
+	<!-- Available Parameters -->
+
+</behavior>

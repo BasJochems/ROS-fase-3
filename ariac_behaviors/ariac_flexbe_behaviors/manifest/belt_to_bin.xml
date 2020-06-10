@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="belt_to_bin">
+
+	<executable package_path="ariac_flexbe_behaviors.belt_to_bin_sm" class="belt_to_binSM" />
+	<tagstring></tagstring>
+	<author>Bas en Geert</author>
+	<date>Tue May 26 2020</date>
+	<description>
+		belt_to_bin
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="RobotSelector" />
+	<contains name="BinPlace" />
+	<contains name="OffsetCounter" />
+
+	<!-- Available Parameters -->
+
+</behavior>
