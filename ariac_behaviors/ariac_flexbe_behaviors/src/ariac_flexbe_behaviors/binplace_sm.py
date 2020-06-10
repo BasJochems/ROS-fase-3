@@ -45,8 +45,8 @@ class BinPlaceSM(Behavior):
 
 
 	def create(self):
-		# x:1424 y:263, x:653 y:236
-		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'], input_keys=['arm'], output_keys=['arm', 'arm_id', 'move_group', 'config_nameA', 'binpose'])
+		# x:1424 y:263, x:645 y:297
+		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'], input_keys=['arm', 'partarmlinks', 'partarmrechts'], output_keys=['arm', 'arm_id', 'move_group', 'config_nameA', 'binpose', 'config_name_bin'])
 		_state_machine.userdata.binpose = []
 		_state_machine.userdata.arm = ''
 		_state_machine.userdata.armlinks = 'links'
@@ -60,6 +60,13 @@ class BinPlaceSM(Behavior):
 		_state_machine.userdata.config_nameA = ''
 		_state_machine.userdata.config_namePLA = 'Left_Pre_Band'
 		_state_machine.userdata.config_namePRA = 'Right_Pre_Band'
+		_state_machine.userdata.config_name_bin = ''
+		_state_machine.userdata.config_nameRechtsGasket = 'Gantry_R-gasketB_L-pistonR'
+		_state_machine.userdata.config_nameRechtsPiston = 'Gantry_R-pistonR_L-gasketB'
+		_state_machine.userdata.partarmlinks = ''
+		_state_machine.userdata.partarmrechts = ''
+		_state_machine.userdata.pistonpart = 'piston_rod_part_red'
+		_state_machine.userdata.gasketpart = 'gasket_part_blue'
 
 		# Additional creation code can be added inside the following tags
 		# [MANUAL_CREATE]
@@ -68,28 +75,28 @@ class BinPlaceSM(Behavior):
 
 
 		with _state_machine:
-			# x:219 y:239
+			# x:40 y:334
 			OperatableStateMachine.add('Arm?',
 										EqualState(),
-										transitions={'true': 'GetPoseBin7', 'false': 'GetPoseBin2'},
+										transitions={'true': 'WelkePartLinks?', 'false': 'WelkePart?'},
 										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
 										remapping={'value_a': 'arm', 'value_b': 'armlinks'})
 
-			# x:651 y:447
+			# x:708 y:459
 			OperatableStateMachine.add('ArmIDLinks',
 										ReplaceState(),
 										transitions={'done': 'MoveGroupLinks'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'value': 'armidl', 'result': 'arm_id'})
 
-			# x:663 y:58
+			# x:681 y:52
 			OperatableStateMachine.add('ArmIDRechts',
 										ReplaceState(),
 										transitions={'done': 'MoveGroupRechts'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'value': 'armidr', 'result': 'arm_id'})
 
-			# x:845 y:59
+			# x:882 y:50
 			OperatableStateMachine.add('MoveGroupRechts',
 										ReplaceState(),
 										transitions={'done': 'ArmNaarLinks'},
@@ -124,26 +131,82 @@ class BinPlaceSM(Behavior):
 										autonomy={'done': Autonomy.Off},
 										remapping={'value': 'config_namePLA', 'result': 'config_nameA'})
 
-			# x:452 y:82
+			# x:473 y:56
 			OperatableStateMachine.add('GetPoseBin2',
 										GetObjectPoseState(object_frame='bin2_frame', ref_frame='world'),
 										transitions={'continue': 'ArmIDRechts', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pose': 'binpose'})
 
-			# x:444 y:347
+			# x:488 y:550
 			OperatableStateMachine.add('GetPoseBin7',
 										GetObjectPoseState(object_frame='bin7_frame', ref_frame='world'),
 										transitions={'continue': 'ArmIDLinks', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pose': 'binpose'})
 
-			# x:853 y:450
+			# x:951 y:460
 			OperatableStateMachine.add('MoveGroupLinks',
 										ReplaceState(),
 										transitions={'done': 'ArmNaarKlaar'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'value': 'move_groupL', 'result': 'move_group'})
+
+			# x:69 y:138
+			OperatableStateMachine.add('WelkePart?',
+										EqualState(),
+										transitions={'true': 'PistonRechts', 'false': 'GasketRechts'},
+										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
+										remapping={'value_a': 'partarmrechts', 'value_b': 'pistonpart'})
+
+			# x:289 y:66
+			OperatableStateMachine.add('PistonRechts',
+										ReplaceState(),
+										transitions={'done': 'GetPoseBin2'},
+										autonomy={'done': Autonomy.Off},
+										remapping={'value': 'config_nameRechtsPiston', 'result': 'config_name_bin'})
+
+			# x:289 y:196
+			OperatableStateMachine.add('GasketRechts',
+										ReplaceState(),
+										transitions={'done': 'GetPoseBin7_2'},
+										autonomy={'done': Autonomy.Off},
+										remapping={'value': 'config_nameRechtsGasket', 'result': 'config_name_bin'})
+
+			# x:52 y:516
+			OperatableStateMachine.add('WelkePartLinks?',
+										EqualState(),
+										transitions={'true': 'PistonLinks', 'false': 'GasketLinks'},
+										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
+										remapping={'value_a': 'partarmlinks', 'value_b': 'pistonpart'})
+
+			# x:293 y:440
+			OperatableStateMachine.add('PistonLinks',
+										ReplaceState(),
+										transitions={'done': 'GetPoseBin2_2'},
+										autonomy={'done': Autonomy.Off},
+										remapping={'value': 'config_nameRechtsGasket', 'result': 'config_name_bin'})
+
+			# x:293 y:544
+			OperatableStateMachine.add('GasketLinks',
+										ReplaceState(),
+										transitions={'done': 'GetPoseBin7'},
+										autonomy={'done': Autonomy.Off},
+										remapping={'value': 'config_nameRechtsPiston', 'result': 'config_name_bin'})
+
+			# x:472 y:195
+			OperatableStateMachine.add('GetPoseBin7_2',
+										GetObjectPoseState(object_frame='bin7_frame', ref_frame='world'),
+										transitions={'continue': 'ArmIDRechts', 'failed': 'failed'},
+										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
+										remapping={'pose': 'binpose'})
+
+			# x:483 y:446
+			OperatableStateMachine.add('GetPoseBin2_2',
+										GetObjectPoseState(object_frame='bin2_frame', ref_frame='world'),
+										transitions={'continue': 'ArmIDLinks', 'failed': 'failed'},
+										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
+										remapping={'pose': 'binpose'})
 
 
 		return _state_machine
